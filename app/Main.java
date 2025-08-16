@@ -1,16 +1,16 @@
 package app;
 
-import DataStructure.LinkedList.Contacto;
-import DataStructure.LinkedList.LinkedList;
+import DataStructure.LinkedList.Contactos;
 import DataStructure.LinkedList.DataTypeExamples;
+import DataStructure.LinkedList.LinkedList;
 import java.util.Scanner;
 
 public class Main {
 
     /** Listas de contactos según el tipo */
-    private static LinkedList<Contacto> listaSimple = null;
-    private static LinkedList<Contacto> listaDoble = null;
-    private static LinkedList<Contacto> listaCircular = null;
+    private static LinkedList<Contactos> listaSimple = null;
+    private static LinkedList<Contactos> listaDoble = null;
+    private static LinkedList<Contactos> listaCircular = null;
 
     public static void main(String[] args) {
         Scanner entrada = new Scanner(System.in);
@@ -108,7 +108,7 @@ public class Main {
     }
 
     private static void manejarContactos(Scanner sc, boolean doble, boolean circular) {
-        LinkedList<Contacto> miLista;
+        LinkedList<Contactos> miLista;
 
         if (!doble && !circular) {
             if (listaSimple == null) {
@@ -129,7 +129,7 @@ public class Main {
             }
             miLista = listaCircular;
         }
-        interactuarConLista(miLista, sc, Contacto.class);
+        interactuarConLista(miLista, sc, Contactos.class);
     }
 
     private static void ejemplosEnteros(Scanner sc, boolean doble, boolean circular) {
@@ -173,7 +173,7 @@ public class Main {
 
     /** Solicitar datos con validaciones */
     private static <T> T solicitarDato(Scanner sc, Class<T> tipo) {
-        if (tipo == Contacto.class) {
+        if (tipo == Contactos.class) {
             String nombre, direccion, telefono;
 
             // Validar nombre solo letras y espacios
@@ -202,7 +202,7 @@ public class Main {
                 }
             } while (telefono.isEmpty());
 
-            return (T) new Contacto(nombre, direccion, telefono);
+            return (T) new Contactos(nombre, direccion, telefono);
         } else {
             // Validar que realmente sea un número entero
             String input;
@@ -222,7 +222,7 @@ public class Main {
 
     /** Solicitar dato para eliminar o buscar */
     private static <T> T solicitarDatoParaEliminar(Scanner sc, Class<T> tipo) {
-        if (tipo == Contacto.class) {
+        if (tipo == Contactos.class) {
             String nombre;
             do {
                 System.out.print("Nombre del contacto a buscar/eliminar: ");
@@ -232,7 +232,7 @@ public class Main {
                     nombre = "";
                 }
             } while (nombre.isEmpty());
-            return (T) new Contacto(nombre, "", "");
+            return (T) new Contactos(nombre, "", "");
         } else {
             String input;
             Integer numero = null;
