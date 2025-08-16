@@ -4,12 +4,12 @@ package DataStructure.LinkedList;
  * Representa un contacto con nombre, dirección y teléfono.
  * Se usa como ejemplo de objeto complejo en la lista enlazada.
  */
-public class Contacto {
+public class Contactos {
     private String nombre;
     private String direccion;
     private String telefono;
 
-    public Contacto(String nombre, String direccion, String telefono) {
+    public Contactos(String nombre, String direccion, String telefono) {
         this.nombre = nombre;
         this.direccion = direccion;
         this.telefono = telefono;
