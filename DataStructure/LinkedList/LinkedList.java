@@ -19,7 +19,7 @@ public class LinkedList<E> {
     private boolean datosIguales(E a, E b) {
         if (a == b) return true;
         if (a == null || b == null) return false;
-        if (a instanceof Contacto ca && b instanceof Contacto cb) {
+        if (a instanceof Contactos ca && b instanceof Contactos cb) {
             return ca.getNombre().trim().equalsIgnoreCase(cb.getNombre().trim());
         }
         return a.equals(b);
