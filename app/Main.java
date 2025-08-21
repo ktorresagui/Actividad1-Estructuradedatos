@@ -1,251 +1,103 @@
 package app;
 
-import DataStructure.LinkedList.Contactos;
 import DataStructure.LinkedList.DataTypeExamples;
-import DataStructure.LinkedList.LinkedList;
+import DataStructure.Stack.Stack;
+import DataStructure.Queue.Queue;
 import java.util.Scanner;
 
+/**
+ *  Simulador de gestor de tareas
+ *  Permite registrar comandos, consultar historial, lanzar instrucciones y organizar procesos
+ */
 public class Main {
 
-    /** Listas de contactos según el tipo */
-    private static LinkedList<Contactos> listaSimple = null;
-    private static LinkedList<Contactos> listaDoble = null;
-    private static LinkedList<Contactos> listaCircular = null;
-
     public static void main(String[] args) {
-        Scanner entrada = new Scanner(System.in);
-        int eleccion;
+        Scanner sc = new Scanner(System.in);
+
+        // Crear estructuras de datos
+        Stack<String> historial = new Stack<>();
+        Queue<String> colaProcesos = new Queue<>();
+        int opcion;
+
+        // Precargar datos de ejemplo
+        DataTypeExamples.testStack(historial);
+        DataTypeExamples.testQueue(colaProcesos);
 
         do {
-            mostrarMenuPrincipal();
-            eleccion = leerOpcion(entrada);
+            System.out.println("\n==================================");
+            System.out.println("     SISTEMA OPERATIVO BASICO       ");
+            System.out.println("==================================");
+            System.out.println("1. Registrar un nuevo comando - Stack");
+            System.out.println("2. Consultar historial de comandos - Stack");
+            System.out.println("3. Lanzar el último comando - Stack");
+            System.out.println("4. Incorporar proceso a la cola - Queue");
+            System.out.println("5. Atender el próximo proceso - Queue");
+            System.out.println("6. Mostrar la cola de procesos - Queue");
+            System.out.println("7. Finalizar simulador");
+            System.out.println("==================================");
+            System.out.print("Selecciona una opción: ");
 
-            switch (eleccion) {
-                case 1 -> menuContactos(entrada);
-                case 2 -> menuEjemplos(entrada);
-                case 3 -> {
-                    String salir;
-                    do {
-                        System.out.print("Seguro que quieres salir? (s/n): ");
-                        salir = entrada.nextLine().trim().toLowerCase();
-                        if (!salir.equals("s") && !salir.equals("n")) {
-                            System.out.println("Entrada invalida. Solo se permite 's' o 'n'.");
-                        }
-                    } while (!salir.equals("s") && !salir.equals("n"));
+            try {
+                opcion = Integer.parseInt(sc.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Debes ingresar un número válido.");
+                opcion = -1;
+            }
 
-                    if (salir.equals("s")) {
-                        eleccion = -99; // bandera de salida
-                        System.out.println("Programa finalizado. Hasta pronto");
+            switch (opcion) {
+                case 1 -> {
+                    System.out.print("Escribe el comando: ");
+                    String cmd = sc.nextLine().trim();
+                    if (!cmd.isEmpty()) {
+                        historial.push(cmd);
+                        System.out.println("Comando registrado en historial.");
+                    } else {
+                        System.out.println("No se puede registrar un comando vacío.");
                     }
                 }
-                default -> System.out.println("Opcion invalida, intenta nuevamente.");
-            }
-        } while (eleccion != -99);
-
-        entrada.close();
-    }
-
-    /** Menú principal */
-    private static void mostrarMenuPrincipal() {
-        System.out.println("\n===== SISTEMA DE LISTAS =====");
-        System.out.println("1. Manejar listas de Contactos");
-        System.out.println("2. Probar ejemplos de listas");
-        System.out.println("3. Salir");
-        System.out.print("Selecciona una opcion: ");
-    }
-
-    /** Menú para contactos */
-    private static void menuContactos(Scanner sc) {
-        int opcion;
-        do {
-            System.out.println("\n--- MENU DE CONTACTOS ---");
-            System.out.println("1. Lista simple");
-            System.out.println("2. Lista doble");
-            System.out.println("3. Lista circular");
-            System.out.println("4. Volver");
-            System.out.print("Opcion: ");
-            opcion = leerOpcion(sc);
-
-            switch (opcion) {
-                case 1 -> manejarContactos(sc, false, false);
-                case 2 -> manejarContactos(sc, true, false);
-                case 3 -> manejarContactos(sc, true, true);
-                case 4 -> System.out.println("Regresando al menu principal...");
-                default -> System.out.println("Opcion no valida.");
-            }
-        } while (opcion != 4);
-    }
-
-    /** Menú para ejemplos */
-    private static void menuEjemplos(Scanner sc) {
-        int opcion;
-        do {
-            System.out.println("\n--- MENU DE EJEMPLOS ---");
-            System.out.println("1. Ejemplos de lista simple");
-            System.out.println("2. Ejemplos de lista doble");
-            System.out.println("3. Ejemplos de ista circular");
-            System.out.println("4. Volver");
-            System.out.print("Opcion: ");
-            opcion = leerOpcion(sc);
-
-            switch (opcion) {
-                case 1 -> ejemplosEnteros(sc, false, false);
-                case 2 -> ejemplosEnteros(sc, true, false);
-                case 3 -> ejemplosEnteros(sc, true, true);
-                case 4 -> System.out.println("Regresando al menu principal...");
-                default -> System.out.println("Opcion no valida.");
-            }
-        } while (opcion != 4);
-    }
-
-    /** Evita repetición de try-catch */
-    private static int leerOpcion(Scanner sc) {
-        try {
-            return Integer.parseInt(sc.nextLine());
-        } catch (NumberFormatException e) {
-            return -1;
-        }
-    }
-
-    private static void manejarContactos(Scanner sc, boolean doble, boolean circular) {
-        LinkedList<Contactos> miLista;
-
-        if (!doble && !circular) {
-            if (listaSimple == null) {
-                listaSimple = new LinkedList<>(false, false);
-                DataTypeExamples.testComplexObjects(listaSimple);
-            }
-            miLista = listaSimple;
-        } else if (doble && !circular) {
-            if (listaDoble == null) {
-                listaDoble = new LinkedList<>(true, false);
-                DataTypeExamples.testComplexObjects(listaDoble);
-            }
-            miLista = listaDoble;
-        } else {
-            if (listaCircular == null) {
-                listaCircular = new LinkedList<>(true, true);
-                DataTypeExamples.testComplexObjects(listaCircular);
-            }
-            miLista = listaCircular;
-        }
-        interactuarConLista(miLista, sc, Contactos.class);
-    }
-
-    private static void ejemplosEnteros(Scanner sc, boolean doble, boolean circular) {
-        LinkedList<Integer> miLista = new LinkedList<>(doble, circular);
-        DataTypeExamples.testIntegers(miLista);
-        interactuarConLista(miLista, sc, Integer.class);
-    }
-
-    /** Interacciones genéricas con listas */
-    private static <T> void interactuarConLista(LinkedList<T> lista, Scanner sc, Class<T> tipo) {
-        int opcion;
-        do {
-            System.out.println("\n>>> Opciones disponibles <<<");
-            System.out.println("1. Agregar al inicio");
-            System.out.println("2. Agregar al final");
-            System.out.println("3. Eliminar elemento");
-            System.out.println("4. Buscar elemento");
-            System.out.println("5. Mostrar lista");
-            System.out.println("6. Salir de esta lista");
-            System.out.print("Elige: ");
-            opcion = leerOpcion(sc);
-
-            switch (opcion) {
-                case 1 -> lista.insertAtFirstPosition(solicitarDato(sc, tipo));
-                case 2 -> lista.insertAtLastPosition(solicitarDato(sc, tipo));
+                case 2 -> {
+                    System.out.println("Historial de comandos:");
+                    historial.show();
+                }
                 case 3 -> {
-                    T dato = solicitarDatoParaEliminar(sc, tipo);
-                    System.out.println(lista.remove(dato) ? "Eliminado con exito." : "No se encontro el elemento.");
+                    if (!historial.isEmpty()) {
+                        String cmd = historial.pop();
+                        System.out.println("Ejecutando: " + cmd);
+                    } else {
+                        System.out.println("No hay comandos disponibles.");
+                    }
                 }
                 case 4 -> {
-                    T dato = solicitarDatoParaEliminar(sc, tipo);
-                    int pos = lista.indexOf(dato);
-                    System.out.println(pos != -1 ? "Encontrado en posicion " + pos : "No esta en la lista.");
+                    System.out.print("Ingresa el nombre del proceso: ");
+                    String proc = sc.nextLine().trim();
+                    if (!proc.isEmpty()) {
+                        colaProcesos.enqueue(proc);
+                        System.out.println("Proceso incorporado a la cola.");
+                    } else {
+                        System.out.println("No se puede agregar un proceso vacío.");
+                    }
                 }
-                case 5 -> lista.show();
-                case 6 -> System.out.println("Volviendo al submenu...");
-                default -> System.out.println("Opcion no valida.");
+                case 5 -> {
+                    if (!colaProcesos.isEmpty()) {
+                        String proc = colaProcesos.dequeue();
+                        System.out.println("Procesando: " + proc);
+                    } else {
+                        System.out.println("No hay procesos en espera.");
+                    }
+                }
+                case 6 -> {
+                    System.out.println("Cola de procesos:");
+                    colaProcesos.show();
+                }
+                case 7 -> System.out.println("Gracias por usar el sistema. Hasta pronto.");
+                default -> {
+                    if (opcion != -1)
+                        System.out.println("Opción inválida, intenta nuevamente.");
+                }
             }
-        } while (opcion != 6);
-    }
 
-    /** Solicitar datos con validaciones */
-    private static <T> T solicitarDato(Scanner sc, Class<T> tipo) {
-        if (tipo == Contactos.class) {
-            String nombre, direccion, telefono;
+        } while (opcion != 7);
 
-            // Validar nombre solo letras y espacios
-            do {
-                System.out.print("Nombre: ");
-                nombre = sc.nextLine().trim();
-                if (!nombre.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+")) {
-                    System.out.println("El nombre solo puede contener letras y espacios.");
-                    nombre = "";
-                }
-            } while (nombre.isEmpty());
-
-            // Dirección (se acepta cualquier cosa, pero no vacía)
-            do {
-                System.out.print("Direccion: ");
-                direccion = sc.nextLine().trim();
-            } while (direccion.isEmpty());
-
-            // Teléfono solo números
-            do {
-                System.out.print("Telefono: ");
-                telefono = sc.nextLine().trim();
-                if (!telefono.matches("\\d+")) {
-                    System.out.println("El telefono debe contener solo numeros.");
-                    telefono = "";
-                }
-            } while (telefono.isEmpty());
-
-            return (T) new Contactos(nombre, direccion, telefono);
-        } else {
-            // Validar que realmente sea un número entero
-            String input;
-            Integer numero = null;
-            do {
-                System.out.print("Numero: ");
-                input = sc.nextLine().trim();
-                if (input.matches("-?\\d+")) { // acepta enteros negativos
-                    numero = Integer.valueOf(input);
-                } else {
-                    System.out.println("Por favor ingresa solo numeros enteros.");
-                }
-            } while (numero == null);
-            return (T) numero;
-        }
-    }
-
-    /** Solicitar dato para eliminar o buscar */
-    private static <T> T solicitarDatoParaEliminar(Scanner sc, Class<T> tipo) {
-        if (tipo == Contactos.class) {
-            String nombre;
-            do {
-                System.out.print("Nombre del contacto a buscar/eliminar: ");
-                nombre = sc.nextLine().trim();
-                if (!nombre.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+")) {
-                    System.out.println("El nombre solo puede contener letras y espacios.");
-                    nombre = "";
-                }
-            } while (nombre.isEmpty());
-            return (T) new Contactos(nombre, "", "");
-        } else {
-            String input;
-            Integer numero = null;
-            do {
-                System.out.print("Numero: ");
-                input = sc.nextLine().trim();
-                if (input.matches("-?\\d+")) {
-                    numero = Integer.valueOf(input);
-                } else {
-                    System.out.println("Por favor ingresa solo numeros enteros.");
-                }
-            } while (numero == null);
-            return (T) numero;
-        }
+        sc.close();
     }
 }
