@@ -1,24 +1,26 @@
 package DataStructure.LinkedList;
 
+import DataStructure.Queue.Queue;
+import DataStructure.Stack.Stack;
+
 /**
- * Clase con ejemplos para poblar listas con enteros y contactos.
- * Sirve para probar el funcionamiento de la estructura de datos.
+ * Cargador de datos de ejemplo para pruebas.
  */
 public class DataTypeExamples {
 
-    public static void testIntegers(LinkedList<Integer> lista) {
-        lista.insertAtLastPosition(10);
-        lista.insertAtLastPosition(22);
-        lista.insertAtLastPosition(35);
-        System.out.println("Ejemplo de lista de enteros:");
-        lista.show();
+    /** Simula un historial inicial de comandos */
+    public static void testStack(Stack<String> stack) {
+        stack.push("git init");
+        stack.push("npm install express");
+        stack.push("docker-compose up -d");
+        
     }
 
-    public static void testComplexObjects(LinkedList<Contactos> lista) {
-        lista.insertAtLastPosition(new Contactos("Diego Martinez", "Av. Universidad, Monterrey", "7865412001"));
-        lista.insertAtLastPosition(new Contactos("Camila Perez", "Colonia Americana, Guadalajara", "5513024786"));
-        lista.insertAtLastPosition(new Contactos("Armando Betancourt", "Av. Chipinque, Monterrey", "4320167550"));
-        System.out.println("Ejemplo de lista de contactos:");
-        lista.show();
+    /** Simula procesos en espera */
+    public static void testQueue(Queue<String> queue) {
+        queue.enqueue("Eclipse IDE");
+        queue.enqueue("Discord");
+        queue.enqueue("Steam");
+        queue.enqueue("Adobe Photoshop");
     }
 }
